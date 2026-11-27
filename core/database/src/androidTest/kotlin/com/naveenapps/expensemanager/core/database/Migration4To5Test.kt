@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,18 +19,27 @@ class Migration4To5Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema shape
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_categoryTableHasNewColumn() {
-        helper.createDatabase(TEST_DB, 4).close()
+        helper.createDatabase(4).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
+        val db = helper.runMigrationsAndValidate(5, listOf(MIGRATION_4_5))
 
         val cursor = db.query("PRAGMA table_info(category)")
         val columnNames = buildList {
@@ -48,7 +60,7 @@ class Migration4To5Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_seededDefaultCategoriesAreBackfilled() {
-        val db4 = helper.createDatabase(TEST_DB, 4)
+        val db4 = helper.createDatabase(4)
         db4.execSQL(
             """
             INSERT INTO category
@@ -60,7 +72,7 @@ class Migration4To5Test {
         )
         db4.close()
 
-        val db5 = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
+        val db5 = helper.runMigrationsAndValidate(5, listOf(MIGRATION_4_5))
         val cursor = db5.query("SELECT id, default_category_key FROM category ORDER BY id")
 
         cursor.moveToFirst()
@@ -80,7 +92,7 @@ class Migration4To5Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_renamedDefaultCategoryIsNotBackfilled() {
-        val db4 = helper.createDatabase(TEST_DB, 4)
+        val db4 = helper.createDatabase(4)
         db4.execSQL(
             """
             INSERT INTO category
@@ -93,7 +105,7 @@ class Migration4To5Test {
 
         // id "3" is normally the seeded "Food" category, but this row was renamed by the user
         // before the migration ran, so it must NOT be marked as a default category.
-        val db5 = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
+        val db5 = helper.runMigrationsAndValidate(5, listOf(MIGRATION_4_5))
         val cursor = db5.query("SELECT default_category_key FROM category WHERE id = '3'")
 
         cursor.moveToFirst()
@@ -106,7 +118,7 @@ class Migration4To5Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_userCreatedCategoryIsNotBackfilled() {
-        val db4 = helper.createDatabase(TEST_DB, 4)
+        val db4 = helper.createDatabase(4)
         db4.execSQL(
             """
             INSERT INTO category
@@ -117,7 +129,7 @@ class Migration4To5Test {
         )
         db4.close()
 
-        val db5 = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
+        val db5 = helper.runMigrationsAndValidate(5, listOf(MIGRATION_4_5))
         val cursor = db5.query(
             "SELECT default_category_key FROM category WHERE id = 'custom-uuid-123'",
         )
@@ -136,7 +148,7 @@ class Migration4To5Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_otherTablesAreUntouched() {
-        val db4 = helper.createDatabase(TEST_DB, 4)
+        val db4 = helper.createDatabase(4)
         db4.execSQL(
             """
             INSERT INTO account
@@ -148,7 +160,7 @@ class Migration4To5Test {
         )
         db4.close()
 
-        val db5 = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
+        val db5 = helper.runMigrationsAndValidate(5, listOf(MIGRATION_4_5))
         val cursor = db5.query("SELECT id, name FROM account")
         cursor.moveToFirst()
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("id"))).isEqualTo("acc-1")

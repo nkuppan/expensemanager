@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,18 +19,27 @@ class Migration6To7Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema shape
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_categoryTableHasNewColumn() {
-        helper.createDatabase(TEST_DB, 6).close()
+        helper.createDatabase(6).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 7, true, MIGRATION_6_7)
+        val db = helper.runMigrationsAndValidate(7, listOf(MIGRATION_6_7))
 
         val cursor = db.query("PRAGMA table_info(category)")
         val columnNames = buildList {
@@ -44,9 +56,9 @@ class Migration6To7Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_accountTableHasNewColumn() {
-        helper.createDatabase(TEST_DB, 6).close()
+        helper.createDatabase(6).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 7, true, MIGRATION_6_7)
+        val db = helper.runMigrationsAndValidate(7, listOf(MIGRATION_6_7))
 
         val cursor = db.query("PRAGMA table_info(account)")
         val columnNames = buildList {
@@ -67,7 +79,7 @@ class Migration6To7Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_existingCategoriesHaveNullImagePath() {
-        val db6 = helper.createDatabase(TEST_DB, 6)
+        val db6 = helper.createDatabase(6)
         db6.execSQL(
             """
             INSERT INTO category
@@ -78,7 +90,7 @@ class Migration6To7Test {
         )
         db6.close()
 
-        val db7 = helper.runMigrationsAndValidate(TEST_DB, 7, true, MIGRATION_6_7)
+        val db7 = helper.runMigrationsAndValidate(7, listOf(MIGRATION_6_7))
         val cursor = db7.query("SELECT custom_image_path FROM category WHERE id = 'cat-1'")
 
         cursor.moveToFirst()
@@ -91,7 +103,7 @@ class Migration6To7Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_existingAccountsHaveNullImagePath() {
-        val db6 = helper.createDatabase(TEST_DB, 6)
+        val db6 = helper.createDatabase(6)
         db6.execSQL(
             """
             INSERT INTO account
@@ -103,7 +115,7 @@ class Migration6To7Test {
         )
         db6.close()
 
-        val db7 = helper.runMigrationsAndValidate(TEST_DB, 7, true, MIGRATION_6_7)
+        val db7 = helper.runMigrationsAndValidate(7, listOf(MIGRATION_6_7))
         val cursor = db7.query("SELECT custom_image_path FROM account WHERE id = 'acc-1'")
 
         cursor.moveToFirst()
@@ -120,7 +132,7 @@ class Migration6To7Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_otherTablesAreUntouched() {
-        val db6 = helper.createDatabase(TEST_DB, 6)
+        val db6 = helper.createDatabase(6)
         db6.execSQL(
             """
             INSERT INTO budget
@@ -132,7 +144,7 @@ class Migration6To7Test {
         )
         db6.close()
 
-        val db7 = helper.runMigrationsAndValidate(TEST_DB, 7, true, MIGRATION_6_7)
+        val db7 = helper.runMigrationsAndValidate(7, listOf(MIGRATION_6_7))
         val cursor = db7.query("SELECT id, amount FROM budget")
         cursor.moveToFirst()
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("id"))).isEqualTo("budget-1")

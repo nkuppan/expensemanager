@@ -2,10 +2,15 @@ package com.naveenapps.expensemanager.core.database
 
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
+import androidx.room.useWriterConnection
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,14 +30,23 @@ class MigrationFullChainTest {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     @Test
     @Throws(IOException::class)
     fun version2DatabaseMigratesToLatestWithItsDataIntact() {
-        helper.createDatabase(TEST_DB, 2).apply {
+        helper.createDatabase(2).apply {
             // Id "3"/"Food" is one of the seeded defaults that MIGRATION_4_5 backfills.
             execSQL(
                 """
@@ -70,7 +84,7 @@ class MigrationFullChainTest {
         }
 
         // Validates every table, column and index against the latest exported schema.
-        val db = helper.runMigrationsAndValidate(TEST_DB, latestVersion, true, *ALL_MIGRATIONS)
+        val db = helper.runMigrationsAndValidate(latestVersion, ALL_MIGRATIONS.toList())
 
         db.query("SELECT id, default_category_key FROM category ORDER BY id").use { cursor ->
             assertThat(cursor.count).isEqualTo(2)
@@ -118,17 +132,25 @@ class MigrationFullChainTest {
     @Test
     @Throws(IOException::class)
     fun migratedDatabaseOpensWithTheAppsRoomConfiguration() {
-        helper.createDatabase(TEST_DB, 2).close()
-        helper.runMigrationsAndValidate(TEST_DB, latestVersion, true, *ALL_MIGRATIONS).close()
+        helper.createDatabase(2).close()
+        helper.runMigrationsAndValidate(latestVersion, ALL_MIGRATIONS.toList()).close()
 
         // Open the migrated file the way the app does; Room re-validates the schema on open.
         val database = Room.databaseBuilder(
             InstrumentationRegistry.getInstrumentation().targetContext,
             ExpenseManagerDatabase::class.java,
             TEST_DB,
-        ).addMigrations(*ALL_MIGRATIONS).build()
+        ).setDriver(AndroidSQLiteDriver()).addMigrations(*ALL_MIGRATIONS).build()
         try {
-            assertThat(database.openHelper.writableDatabase.version).isEqualTo(latestVersion)
+            val version = runBlocking {
+                database.useWriterConnection { transactor ->
+                    transactor.usePrepared("PRAGMA user_version") {
+                        it.step()
+                        it.getLong(0).toInt()
+                    }
+                }
+            }
+            assertThat(version).isEqualTo(latestVersion)
         } finally {
             database.close()
         }

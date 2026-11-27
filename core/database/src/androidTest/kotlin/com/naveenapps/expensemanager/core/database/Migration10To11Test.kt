@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,14 +19,23 @@ class Migration10To11Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     @Test
     @Throws(IOException::class)
     fun existingBudgetsKeepTheirDataAndHaveNoName() {
-        val db10 = helper.createDatabase(TEST_DB, 10)
+        val db10 = helper.createDatabase(10)
         db10.execSQL(
             """
             INSERT INTO budget
@@ -35,7 +47,7 @@ class Migration10To11Test {
         )
         db10.close()
 
-        val db11 = helper.runMigrationsAndValidate(TEST_DB, 11, true, MIGRATION_10_11)
+        val db11 = helper.runMigrationsAndValidate(11, listOf(MIGRATION_10_11))
         db11.query("SELECT name, selected_month, amount FROM budget WHERE id = 'budget-1'").use { cursor ->
             cursor.moveToFirst()
             assertThat(cursor.isNull(0)).isTrue()
@@ -48,9 +60,9 @@ class Migration10To11Test {
     @Test
     @Throws(IOException::class)
     fun aNameCanBeStoredAfterMigrating() {
-        helper.createDatabase(TEST_DB, 10).close()
+        helper.createDatabase(10).close()
 
-        val db11 = helper.runMigrationsAndValidate(TEST_DB, 11, true, MIGRATION_10_11)
+        val db11 = helper.runMigrationsAndValidate(11, listOf(MIGRATION_10_11))
         db11.execSQL(
             """
             INSERT INTO budget

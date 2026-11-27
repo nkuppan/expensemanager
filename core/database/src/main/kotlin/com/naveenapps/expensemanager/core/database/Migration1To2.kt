@@ -1,7 +1,8 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.execSQL
 
 /**
  * Version 1 of `expense_manager_database.db` predates this repository: its schema was never
@@ -22,30 +23,30 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  */
 internal val MIGRATION_1_2 = object : Migration(1, 2) {
 
-    override fun migrate(db: SupportSQLiteDatabase) {
+    override fun migrate(connection: SQLiteConnection) {
         // Room runs migrations inside a transaction, where foreign_keys can't be switched off;
         // deferring the checks to commit lets tables be rebuilt in any order.
-        db.execSQL("PRAGMA defer_foreign_keys = ON")
+        connection.execSQL("PRAGMA defer_foreign_keys = ON")
 
         val oldColumns = V2_TABLES.associate { table ->
-            table.name to columnsOf(db, table.name).also { columns ->
-                if (columns.isNotEmpty()) db.execSQL("ALTER TABLE `${table.name}` RENAME TO `${table.name}$OLD_SUFFIX`")
+            table.name to columnsOf(connection, table.name).also { columns ->
+                if (columns.isNotEmpty()) connection.execSQL("ALTER TABLE `${table.name}` RENAME TO `${table.name}$OLD_SUFFIX`")
             }
         }
 
         V2_TABLES.forEach { table ->
-            db.execSQL(table.createSql)
+            connection.execSQL(table.createSql)
             val columns = oldColumns[table.name].orEmpty()
-            if (columns.isNotEmpty()) copyRows(db, table, columns)
+            if (columns.isNotEmpty()) copyRows(connection, table, columns)
         }
 
-        repairTransactions(db)
-        removeOrphans(db)
+        repairTransactions(connection)
+        removeOrphans(connection)
 
-        V2_TABLES.forEach { table -> db.execSQL("DROP TABLE IF EXISTS `${table.name}$OLD_SUFFIX`") }
+        V2_TABLES.forEach { table -> connection.execSQL("DROP TABLE IF EXISTS `${table.name}$OLD_SUFFIX`") }
     }
 
-    private fun copyRows(db: SupportSQLiteDatabase, table: V2Table, oldColumns: Set<String>) {
+    private fun copyRows(connection: SQLiteConnection, table: V2Table, oldColumns: Set<String>) {
         val selects = table.columns.joinToString(", ") { column ->
             val source = column.names.firstOrNull { it in oldColumns }
             when {
@@ -55,52 +56,52 @@ internal val MIGRATION_1_2 = object : Migration(1, 2) {
             }
         }
         val targets = table.columns.joinToString(", ") { "`${it.name}`" }
-        db.execSQL(
+        connection.execSQL(
             "INSERT OR IGNORE INTO `${table.name}` ($targets) " +
                 "SELECT $selects FROM `${table.name}$OLD_SUFFIX`",
         )
     }
 
     /** Transactions need an existing account; give account-less ones a fallback account. */
-    private fun repairTransactions(db: SupportSQLiteDatabase) {
-        val needsFallback = db.query(
+    private fun repairTransactions(connection: SQLiteConnection) {
+        val needsFallback = connection.prepare(
             "SELECT COUNT(*) FROM `transaction` WHERE from_account_id NOT IN (SELECT id FROM account)",
-        ).use { it.moveToFirst() && it.getInt(0) > 0 }
+        ).use { it.step() && it.getLong(0) > 0 }
         if (needsFallback) {
-            db.execSQL(
+            connection.execSQL(
                 "INSERT OR IGNORE INTO account (id, name, type, icon_background_color, icon_name, " +
                     "amount, credit_limit, created_on, updated_on) VALUES " +
                     "('$FALLBACK_ACCOUNT_ID', 'Cash', 0, '#43A546', 'account_balance', 0, 0, $NOW, $NOW)",
             )
-            db.execSQL(
+            connection.execSQL(
                 "UPDATE `transaction` SET from_account_id = '$FALLBACK_ACCOUNT_ID' " +
                     "WHERE from_account_id NOT IN (SELECT id FROM account)",
             )
         }
         // A transfer to an account that's gone becomes a plain transaction.
-        db.execSQL(
+        connection.execSQL(
             "UPDATE `transaction` SET to_account_id = NULL " +
                 "WHERE to_account_id IS NOT NULL AND to_account_id NOT IN (SELECT id FROM account)",
         )
     }
 
     /** Rows pointing at a parent that doesn't exist would fail the deferred FK check. */
-    private fun removeOrphans(db: SupportSQLiteDatabase) {
-        db.execSQL("DELETE FROM `transaction` WHERE category_id NOT IN (SELECT id FROM category)")
-        db.execSQL(
+    private fun removeOrphans(connection: SQLiteConnection) {
+        connection.execSQL("DELETE FROM `transaction` WHERE category_id NOT IN (SELECT id FROM category)")
+        connection.execSQL(
             "DELETE FROM budget_category_relation WHERE budget_id NOT IN (SELECT id FROM budget) " +
                 "OR category_id NOT IN (SELECT id FROM category)",
         )
-        db.execSQL(
+        connection.execSQL(
             "DELETE FROM budget_account_relation WHERE budget_id NOT IN (SELECT id FROM budget) " +
                 "OR account_id NOT IN (SELECT id FROM account)",
         )
     }
 
-    private fun columnsOf(db: SupportSQLiteDatabase, table: String): Set<String> = db.query("PRAGMA table_info(`$table`)").use { cursor ->
+    private fun columnsOf(connection: SQLiteConnection, table: String): Set<String> = connection.prepare("PRAGMA table_info(`$table`)").use { statement ->
         buildSet {
-            val nameIndex = cursor.getColumnIndexOrThrow("name")
-            while (cursor.moveToNext()) add(cursor.getString(nameIndex))
+            val nameIndex = (0 until statement.getColumnCount()).first { statement.getColumnName(it) == "name" }
+            while (statement.step()) add(statement.getText(nameIndex))
         }
     }
 }

@@ -105,7 +105,13 @@ When a screen needs an Activity-scoped dependency (e.g. `ShareRepository`, `Back
 
 ### Database
 
-Room, with hand-written `Migration` objects in `core/database/.../DatabaseMigrations.kt` (never destructive/auto migrations) and `exportSchema = true`. Every schema change needs: a new `MIGRATION_N_N+1` object, a version bump in `ExpenseManagerDatabase.kt`, registering the migration in `KoinDatabaseModule.kt`'s `.addMigrations(...)`, and an instrumented test in `core/database/src/androidTest/.../Migration<N>To<N+1>Test.kt` using `MigrationTestHelper` (see `Migration4To5Test.kt` for the pattern: schema-shape assertions, backfill assertions, and an "other tables untouched" assertion).
+Room (2.8, on the SQLiteDriver APIs: `AndroidSQLiteDriver`, the framework SQLite) with hand-written migrations in `core/database/.../DatabaseMigrations.kt` (never destructive/auto migrations) and `exportSchema = true`. The file and version are the constants `DATABASE_NAME` and `DATABASE_VERSION` in `ExpenseManagerDatabase.kt`. Every schema change needs:
+- a new `MIGRATION_N_N+1` that overrides `migrate(connection: SQLiteConnection)` (`connection.execSQL`; bound values through `prepare` + `bindText`/`bindLong` + `step`; never `SupportSQLiteDatabase`), added to `ALL_MIGRATIONS`;
+- `DATABASE_VERSION` bumped;
+- an instrumented test `core/database/src/androidTest/.../Migration<N>To<N+1>Test.kt` with the driver-based `MigrationTestHelper` (`file`, `AndroidSQLiteDriver()`, `ExpenseManagerDatabase::class`), deleting `TEST_DB` in `@Before` (the helper reuses the file), reading through `connection.query(...)` (`BufferedCursor.kt`, Cursor-style calls), and `PRAGMA foreign_keys = ON` when it tests cascades. See `Migration4To5Test.kt` for the pattern: schema-shape assertions, backfill assertions, and an "other tables untouched" assertion;
+- the pinned SQL re-recorded deliberately: `MigrationSqlTest` (JVM) compares every statement the migrations run with `src/test/resources/migration-sql.golden.txt`; `./gradlew :core:database:testDebugUnitTest -PrecordMigrationSql=true`, then review the diff of the golden file.
+
+No code outside core:database touches `openHelper` or SupportSQLite on the Room database (Room disables them once a driver is set): use `useReaderConnection`/`useWriterConnection` (see `BackupRepositoryImpl.snapshotDatabase`). `PendingDatabaseRestore` validates a staged backup file with Android's own `SQLiteDatabase` before Room opens it. Change 8 of the KMP migration moves this module to Room 3 (`androidx.room3`) and KMP.
 
 ### Locale-sensitive code — read before touching `DateUtils.kt` or anything persisted as text
 

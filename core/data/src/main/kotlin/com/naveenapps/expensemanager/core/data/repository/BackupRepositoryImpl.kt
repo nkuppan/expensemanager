@@ -3,10 +3,14 @@ package com.naveenapps.expensemanager.core.data.repository
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.room.immediateTransaction
+import androidx.room.useWriterConnection
 import com.naveenapps.expensemanager.core.data.repository.backup.BackupArchive
 import com.naveenapps.expensemanager.core.data.repository.backup.BackupCipher
 import com.naveenapps.expensemanager.core.data.repository.backup.isSqliteDatabase
 import com.naveenapps.expensemanager.core.data.repository.backup.sqliteUserVersion
+import com.naveenapps.expensemanager.core.database.DATABASE_NAME
+import com.naveenapps.expensemanager.core.database.DATABASE_VERSION
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.PendingDatabaseRestore
 import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
@@ -14,7 +18,6 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BackupException
 import com.naveenapps.expensemanager.core.repository.BackupException.Reason
 import com.naveenapps.expensemanager.core.repository.BackupRepository
-import java.io.File
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.text.SimpleDateFormat
@@ -83,7 +86,7 @@ class BackupRepositoryImpl(
             // Room can migrate an older schema up, but can't open a newer one, nor one older than
             // the oldest registered migration.
             val version = restored.sqliteUserVersion()
-            if (version > database.openHelper.readableDatabase.version) {
+            if (version > DATABASE_VERSION) {
                 throw BackupException(Reason.NEWER_VERSION)
             }
             if (version < PendingDatabaseRestore.OLDEST_RESTORABLE_VERSION) {
@@ -93,7 +96,7 @@ class BackupRepositoryImpl(
             if (PendingDatabaseRestore.missingRequiredTables(context, restored).isNotEmpty()) {
                 throw BackupException(Reason.INVALID_FILE)
             }
-            PendingDatabaseRestore.stage(context, databaseName(), restored)
+            PendingDatabaseRestore.stage(context, DATABASE_NAME, restored)
             // Images get new random names when saved, so restoring them alongside the
             // current ones can't overwrite anything the user still has.
             BackupArchive.extractFiles(contents.files, context.filesDir)
@@ -122,18 +125,14 @@ class BackupRepositoryImpl(
     /**
      * A consistent copy of the database file while Room keeps it open. The checkpoint moves WAL
      * frames into the main file; the (empty) write transaction then blocks writers, and so any
-     * further checkpoint, while the file is read.
+     * further checkpoint, while the file is read. Room's writer connection is exclusive in its
+     * pool, so the checkpoint and the read happen on the one connection that may write.
      */
-    private fun snapshotDatabase(): ByteArray {
-        val db = database.openHelper.writableDatabase
-        db.query("PRAGMA wal_checkpoint(TRUNCATE)").use { it.moveToFirst() }
-        val file = File(db.path ?: context.getDatabasePath(databaseName()).path)
-        db.beginTransaction()
-        try {
-            return file.readBytes()
-        } finally {
-            db.endTransaction()
-        }
+    private suspend fun snapshotDatabase(): ByteArray = database.useWriterConnection { transactor ->
+        transactor.usePrepared("PRAGMA wal_checkpoint(TRUNCATE)") { it.step() }
+        // An immediate transaction holds the write lock (in WAL mode the same as the EXCLUSIVE one
+        // SupportSQLite's beginTransaction() took), so nothing can write or checkpoint meanwhile.
+        transactor.immediateTransaction { context.getDatabasePath(DATABASE_NAME).readBytes() }
     }
 
     private fun decrypt(data: ByteArray): ByteArray = try {
@@ -154,8 +153,6 @@ class BackupRepositoryImpl(
             throw BackupException(Reason.INVALID_FILE, e)
         }
     }
-
-    private fun databaseName(): String = requireNotNull(database.openHelper.databaseName)
 
     private inline fun runCatchingBackup(block: () -> Unit): Resource<Boolean> = try {
         block()

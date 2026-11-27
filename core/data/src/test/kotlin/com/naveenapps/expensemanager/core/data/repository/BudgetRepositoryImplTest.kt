@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import androidx.room.Room
+import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
@@ -38,7 +39,7 @@ class BudgetRepositoryImplTest : BaseCoroutineTest() {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             ExpenseManagerDatabase::class.java,
-        ).allowMainThreadQueries().build()
+        ).setDriver(AndroidSQLiteDriver()).allowMainThreadQueries().build()
 
         categoryDao = database.categoryDao()
         accountDao = database.accountDao()

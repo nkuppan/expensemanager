@@ -20,7 +20,7 @@ class MigrationSqlTest {
 
     private fun recordAll(): String = ALL_MIGRATIONS.joinToString("") { migration ->
         val recorder = MigrationSqlRecorder()
-        migration.migrate(recorder.database)
+        migration.migrate(recorder.connection)
         "=== ${migration.startVersion} -> ${migration.endVersion}\n" + recorder.statements.joinToString("") { "$it\n;;\n" }
     }
 
@@ -39,11 +39,6 @@ class MigrationSqlTest {
 
     @Test
     fun everyMigrationIsPinned() {
-        assertEquals((1..DATABASE_VERSION_FOR_PIN - 1).map { it to it + 1 }, ALL_MIGRATIONS.map { it.startVersion to it.endVersion })
-    }
-
-    private companion object {
-        // The current schema version (ExpenseManagerDatabase); becomes DATABASE_VERSION in group 2.
-        const val DATABASE_VERSION_FOR_PIN = 12
+        assertEquals((1 until DATABASE_VERSION).map { it to it + 1 }, ALL_MIGRATIONS.map { it.startVersion to it.endVersion })
     }
 }

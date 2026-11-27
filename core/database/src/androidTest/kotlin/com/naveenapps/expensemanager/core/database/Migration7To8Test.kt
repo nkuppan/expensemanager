@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,18 +19,27 @@ class Migration7To8Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema shape
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_transactionAttachmentTableExists() {
-        helper.createDatabase(TEST_DB, 7).close()
+        helper.createDatabase(7).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 8, true, MIGRATION_7_8)
+        val db = helper.runMigrationsAndValidate(8, listOf(MIGRATION_7_8))
 
         val cursor = db.query("PRAGMA table_info(transaction_attachment)")
         val columnNames = buildList {
@@ -48,7 +60,7 @@ class Migration7To8Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_deletingTransactionCascadesToAttachments() {
-        val db7 = helper.createDatabase(TEST_DB, 7)
+        val db7 = helper.createDatabase(7)
         db7.execSQL(
             """
             INSERT INTO category
@@ -77,7 +89,10 @@ class Migration7To8Test {
         )
         db7.close()
 
-        val db8 = helper.runMigrationsAndValidate(TEST_DB, 8, true, MIGRATION_7_8)
+        val db8 = helper.runMigrationsAndValidate(8, listOf(MIGRATION_7_8))
+        // The app's Room connections enforce foreign keys; the helper's raw connection doesn't
+        // unless asked (the SupportSQLite helper's did), and the cascade needs them.
+        db8.execSQL("PRAGMA foreign_keys = ON")
         db8.execSQL(
             """
             INSERT INTO transaction_attachment (id, transaction_id, image_path, created_on)
@@ -105,7 +120,7 @@ class Migration7To8Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_otherTablesAreUntouched() {
-        val db7 = helper.createDatabase(TEST_DB, 7)
+        val db7 = helper.createDatabase(7)
         db7.execSQL(
             """
             INSERT INTO category
@@ -116,7 +131,7 @@ class Migration7To8Test {
         )
         db7.close()
 
-        val db8 = helper.runMigrationsAndValidate(TEST_DB, 8, true, MIGRATION_7_8)
+        val db8 = helper.runMigrationsAndValidate(8, listOf(MIGRATION_7_8))
         val cursor = db8.query("SELECT id, name FROM category")
         cursor.moveToFirst()
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("id"))).isEqualTo("cat-1")

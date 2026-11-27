@@ -1,11 +1,15 @@
 package com.naveenapps.expensemanager.core.database
 
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.testing.MigrationTestHelper
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,19 +26,28 @@ class Migration9To10Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_transactionIndicesExistAndMatchSchema() {
-        helper.createDatabase(TEST_DB, 9).close()
+        helper.createDatabase(9).close()
 
         // validateDroppedTables = true compares every table, indices included, with 10.json.
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
 
         assertThat(indexNames(db, "transaction")).containsExactly(
             "index_transaction_created_on",
@@ -50,8 +63,8 @@ class Migration9To10Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_transactionQueriesUseTheNewIndices() {
-        helper.createDatabase(TEST_DB, 9).close()
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        helper.createDatabase(9).close()
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
 
         assertThat(queryPlan(db, "SELECT * FROM `transaction` WHERE from_account_id = 'acc-1'"))
             .contains("index_transaction_from_account_id")
@@ -73,11 +86,11 @@ class Migration9To10Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_existingRowsAreUnchanged() {
-        val db9 = helper.createDatabase(TEST_DB, 9)
+        val db9 = helper.createDatabase(9)
         insertSampleData(db9)
         db9.close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
 
         db.query(
             "SELECT id, notes, category_id, from_account_id, to_account_id, type, amount, " +
@@ -128,11 +141,11 @@ class Migration9To10Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_deletingAnAccountStillCascadesToItsTransactionsAndAttachments() {
-        val db9 = helper.createDatabase(TEST_DB, 9)
+        val db9 = helper.createDatabase(9)
         insertSampleData(db9)
         db9.close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
         // Room turns foreign keys on for app connections; do the same for this raw connection.
         db.execSQL("PRAGMA foreign_keys = ON")
 
@@ -147,11 +160,11 @@ class Migration9To10Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_deletingACategoryStillCascadesToItsTransactions() {
-        val db9 = helper.createDatabase(TEST_DB, 9)
+        val db9 = helper.createDatabase(9)
         insertSampleData(db9)
         db9.close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
         db.execSQL("PRAGMA foreign_keys = ON")
 
         db.execSQL("DELETE FROM category WHERE id = 'cat-1'")
@@ -164,11 +177,11 @@ class Migration9To10Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_newTransactionsCanBeInsertedAndFoundByIndexedColumns() {
-        val db9 = helper.createDatabase(TEST_DB, 9)
+        val db9 = helper.createDatabase(9)
         insertSampleData(db9)
         db9.close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, MIGRATION_9_10)
+        val db = helper.runMigrationsAndValidate(10, listOf(MIGRATION_9_10))
         db.execSQL(
             """
             INSERT INTO `transaction`
@@ -190,7 +203,7 @@ class Migration9To10Test {
 
     // region helpers
 
-    private fun insertSampleData(db: SupportSQLiteDatabase) {
+    private fun insertSampleData(db: SQLiteConnection) {
         db.execSQL(
             """
             INSERT INTO category
@@ -236,7 +249,7 @@ class Migration9To10Test {
         )
     }
 
-    private fun indexNames(db: SupportSQLiteDatabase, table: String): List<String> = db.query("PRAGMA index_list(`$table`)").use { cursor ->
+    private fun indexNames(db: SQLiteConnection, table: String): List<String> = db.query("PRAGMA index_list(`$table`)").use { cursor ->
         buildList {
             while (cursor.moveToNext()) {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
@@ -246,13 +259,24 @@ class Migration9To10Test {
         }
     }
 
-    private fun queryPlan(db: SupportSQLiteDatabase, sql: String): String = db.query("EXPLAIN QUERY PLAN $sql").use { cursor ->
-        buildString {
-            while (cursor.moveToNext()) append(cursor.getString(cursor.getColumnIndexOrThrow("detail")))
+    /**
+     * The query plan for [sql] in the migrated database. AndroidSQLiteDriver only treats SELECT,
+     * PRAGMA and WITH as row-returning, so `EXPLAIN` is read through Android's own SQLiteDatabase
+     * on the same file; [db] stays open meanwhile (the migration is already committed).
+     */
+    @Suppress("UNUSED_PARAMETER")
+    private fun queryPlan(db: SQLiteConnection, sql: String): String {
+        val path = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB).path
+        return SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY).use { raw ->
+            raw.rawQuery("EXPLAIN QUERY PLAN $sql", null).use { cursor ->
+                buildString {
+                    while (cursor.moveToNext()) append(cursor.getString(cursor.getColumnIndexOrThrow("detail")))
+                }
+            }
         }
     }
 
-    private fun count(db: SupportSQLiteDatabase, table: String): Int = db.query("SELECT COUNT(*) FROM `$table`").use { cursor ->
+    private fun count(db: SQLiteConnection, table: String): Int = db.query("SELECT COUNT(*) FROM `$table`").use { cursor ->
         cursor.moveToFirst()
         cursor.getInt(0)
     }

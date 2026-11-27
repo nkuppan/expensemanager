@@ -1,17 +1,18 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.execSQL
 
 internal val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `account` ADD COLUMN `sequence` INTEGER NOT NULL DEFAULT 0")
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("ALTER TABLE `account` ADD COLUMN `sequence` INTEGER NOT NULL DEFAULT 0")
     }
 }
 
 internal val MIGRATION_3_4 = object : Migration(3, 4) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             "CREATE TABLE IF NOT EXISTS `budget_new` (" +
                 "`id` TEXT NOT NULL, " +
                 "`selected_month` TEXT NOT NULL, " +
@@ -22,14 +23,14 @@ internal val MIGRATION_3_4 = object : Migration(3, 4) {
                 "`updated_on` INTEGER NOT NULL, " +
                 "PRIMARY KEY(`id`))",
         )
-        db.execSQL(
+        connection.execSQL(
             "INSERT INTO `budget_new` " +
                 "(`id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on`) " +
                 "SELECT `id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on` " +
                 "FROM `budget`",
         )
-        db.execSQL("DROP TABLE `budget`")
-        db.execSQL("ALTER TABLE `budget_new` RENAME TO `budget`")
+        connection.execSQL("DROP TABLE `budget`")
+        connection.execSQL("ALTER TABLE `budget_new` RENAME TO `budget`")
     }
 }
 
@@ -46,8 +47,8 @@ internal val MIGRATION_3_4 = object : Migration(3, 4) {
  * translation the user never asked for.
  */
 internal val MIGRATION_4_5 = object : Migration(4, 5) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `category` ADD COLUMN `default_category_key` TEXT DEFAULT NULL")
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("ALTER TABLE `category` ADD COLUMN `default_category_key` TEXT DEFAULT NULL")
 
         val defaults = listOf(
             Triple("1", "Clothing", "clothing"),
@@ -64,11 +65,16 @@ internal val MIGRATION_4_5 = object : Migration(4, 5) {
         )
 
         defaults.forEach { (id, originalName, key) ->
-            db.execSQL(
+            // SQLiteConnection has no execSQL with arguments: bind them on a prepared statement.
+            connection.prepare(
                 "UPDATE `category` SET `default_category_key` = ? " +
                     "WHERE `id` = ? AND `name` = ?",
-                arrayOf(key, id, originalName),
-            )
+            ).use { statement ->
+                statement.bindText(1, key)
+                statement.bindText(2, id)
+                statement.bindText(3, originalName)
+                statement.step()
+            }
         }
     }
 }
@@ -80,8 +86,8 @@ internal val MIGRATION_4_5 = object : Migration(4, 5) {
  * implicitly monthly — is correctly backfilled without needing a separate UPDATE statement.
  */
 internal val MIGRATION_5_6 = object : Migration(5, 6) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `budget` ADD COLUMN `period_type` INTEGER NOT NULL DEFAULT 0")
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("ALTER TABLE `budget` ADD COLUMN `period_type` INTEGER NOT NULL DEFAULT 0")
     }
 }
 
@@ -96,9 +102,9 @@ internal val MIGRATION_5_6 = object : Migration(5, 6) {
  * `category` column present, so there's no real-world database to preserve a separate step for.
  */
 internal val MIGRATION_6_7 = object : Migration(6, 7) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `category` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL")
-        db.execSQL("ALTER TABLE `account` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL")
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("ALTER TABLE `category` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL")
+        connection.execSQL("ALTER TABLE `account` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL")
     }
 }
 
@@ -112,8 +118,8 @@ internal val MIGRATION_6_7 = object : Migration(6, 7) {
  * only owns the row, not the file.
  */
 internal val MIGRATION_7_8 = object : Migration(7, 8) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             "CREATE TABLE IF NOT EXISTS `transaction_attachment` (" +
                 "`id` TEXT NOT NULL, " +
                 "`transaction_id` TEXT NOT NULL, " +
@@ -132,8 +138,8 @@ internal val MIGRATION_7_8 = object : Migration(7, 8) {
  * or Room's schema validation fails on open.
  */
 internal val MIGRATION_8_9 = object : Migration(8, 9) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             "CREATE TABLE IF NOT EXISTS `recurring_transaction` (" +
                 "`id` TEXT NOT NULL, " +
                 "`notes` TEXT NOT NULL, " +
@@ -153,10 +159,10 @@ internal val MIGRATION_8_9 = object : Migration(8, 9) {
                 "FOREIGN KEY(`to_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
                 "FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE)",
         )
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_from_account_id` ON `recurring_transaction` (`from_account_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_to_account_id` ON `recurring_transaction` (`to_account_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_category_id` ON `recurring_transaction` (`category_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_next_due_date` ON `recurring_transaction` (`next_due_date`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_from_account_id` ON `recurring_transaction` (`from_account_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_to_account_id` ON `recurring_transaction` (`to_account_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_category_id` ON `recurring_transaction` (`category_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_next_due_date` ON `recurring_transaction` (`next_due_date`)")
     }
 }
 
@@ -166,12 +172,12 @@ internal val MIGRATION_8_9 = object : Migration(8, 9) {
  * @Index declarations on TransactionEntity and TransactionAttachmentEntity.
  */
 internal val MIGRATION_9_10 = object : Migration(9, 10) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_created_on` ON `transaction` (`created_on`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_from_account_id` ON `transaction` (`from_account_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_to_account_id` ON `transaction` (`to_account_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_category_id` ON `transaction` (`category_id`)")
-        db.execSQL(
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_created_on` ON `transaction` (`created_on`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_from_account_id` ON `transaction` (`from_account_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_to_account_id` ON `transaction` (`to_account_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_category_id` ON `transaction` (`category_id`)")
+        connection.execSQL(
             "CREATE INDEX IF NOT EXISTS `index_transaction_attachment_transaction_id` " +
                 "ON `transaction_attachment` (`transaction_id`)",
         )
@@ -183,8 +189,8 @@ internal val MIGRATION_9_10 = object : Migration(9, 10) {
  * name ("This month's budget", "October 2026 budget", ...) exactly as before.
  */
 internal val MIGRATION_10_11 = object : Migration(10, 11) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `budget` ADD COLUMN `name` TEXT DEFAULT NULL")
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("ALTER TABLE `budget` ADD COLUMN `name` TEXT DEFAULT NULL")
     }
 }
 
@@ -194,8 +200,8 @@ internal val MIGRATION_10_11 = object : Migration(10, 11) {
  * DebtPersonEntity and DebtEntryEntity exactly, indices included.
  */
 internal val MIGRATION_11_12 = object : Migration(11, 12) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
             "CREATE TABLE IF NOT EXISTS `debt_person` (" +
                 "`id` TEXT NOT NULL, " +
                 "`name` TEXT NOT NULL, " +
@@ -203,7 +209,7 @@ internal val MIGRATION_11_12 = object : Migration(11, 12) {
                 "`updated_on` INTEGER NOT NULL, " +
                 "PRIMARY KEY(`id`))",
         )
-        db.execSQL(
+        connection.execSQL(
             "CREATE TABLE IF NOT EXISTS `debt_entry` (" +
                 "`id` TEXT NOT NULL, " +
                 "`person_id` TEXT NOT NULL, " +
@@ -219,9 +225,9 @@ internal val MIGRATION_11_12 = object : Migration(11, 12) {
                 "FOREIGN KEY(`person_id`) REFERENCES `debt_person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
                 "FOREIGN KEY(`account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL)",
         )
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_person_id` ON `debt_entry` (`person_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_account_id` ON `debt_entry` (`account_id`)")
-        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_due_date` ON `debt_entry` (`due_date`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_person_id` ON `debt_entry` (`person_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_account_id` ON `debt_entry` (`account_id`)")
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_due_date` ON `debt_entry` (`due_date`)")
     }
 }
 

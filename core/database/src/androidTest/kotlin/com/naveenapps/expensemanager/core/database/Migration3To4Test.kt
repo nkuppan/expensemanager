@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,23 +24,27 @@ class Migration3To4Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema shape
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_budgetTableHasCorrectColumns() {
-        helper.createDatabase(TEST_DB, 3).close()
+        helper.createDatabase(3).close()
 
-        val db = helper.runMigrationsAndValidate(
-            TEST_DB,
-            4,
-            true,
-            MIGRATION_3_4,
-        )
+        val db = helper.runMigrationsAndValidate(4, listOf(MIGRATION_3_4))
 
         val cursor = db.query("PRAGMA table_info(budget)")
         val columnNames = buildList {
@@ -62,9 +69,9 @@ class Migration3To4Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_droppedColumnsNoLongerExist() {
-        helper.createDatabase(TEST_DB, 3).close()
+        helper.createDatabase(3).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 4, true, MIGRATION_3_4)
+        val db = helper.runMigrationsAndValidate(4, listOf(MIGRATION_3_4))
 
         val cursor = db.query("PRAGMA table_info(budget)")
         val columnNames = buildList {
@@ -85,7 +92,7 @@ class Migration3To4Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_existingBudgetRowsArePreserved() {
-        val db3 = helper.createDatabase(TEST_DB, 3)
+        val db3 = helper.createDatabase(3)
         db3.execSQL(
             """
             INSERT INTO budget
@@ -98,7 +105,7 @@ class Migration3To4Test {
         )
         db3.close()
 
-        val db4 = helper.runMigrationsAndValidate(TEST_DB, 4, true, MIGRATION_3_4)
+        val db4 = helper.runMigrationsAndValidate(4, listOf(MIGRATION_3_4))
         val cursor = db4.query("SELECT * FROM budget ORDER BY id")
 
         assertThat(cursor.count).isEqualTo(2)
@@ -128,9 +135,9 @@ class Migration3To4Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_emptyBudgetTableRemainsEmpty() {
-        helper.createDatabase(TEST_DB, 3).close()
+        helper.createDatabase(3).close()
 
-        val db4 = helper.runMigrationsAndValidate(TEST_DB, 4, true, MIGRATION_3_4)
+        val db4 = helper.runMigrationsAndValidate(4, listOf(MIGRATION_3_4))
         val cursor = db4.query("SELECT COUNT(*) FROM budget")
         cursor.moveToFirst()
         val count = cursor.getInt(0)
@@ -147,7 +154,7 @@ class Migration3To4Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_otherTablesAreUntouched() {
-        val db3 = helper.createDatabase(TEST_DB, 3)
+        val db3 = helper.createDatabase(3)
         db3.execSQL(
             """
             INSERT INTO account
@@ -159,7 +166,7 @@ class Migration3To4Test {
         )
         db3.close()
 
-        val db4 = helper.runMigrationsAndValidate(TEST_DB, 4, true, MIGRATION_3_4)
+        val db4 = helper.runMigrationsAndValidate(4, listOf(MIGRATION_3_4))
         val cursor = db4.query("SELECT id, name FROM account")
         cursor.moveToFirst()
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("id"))).isEqualTo("acc-1")

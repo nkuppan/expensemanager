@@ -35,7 +35,10 @@
 - Every existing migration assertion still runs.
 
 **Non-Goals:**
-- iOS, KMP or Room 3 (change 8).
+- iOS, KMP or Room 3 (change 8; decision 27 Nov: change 8 moves to Room 3 and KMP together).
+  Room 3 needs everything this change does, because it has no SupportSQLite. This change is
+  Google's "phase 1" of the 2.x → 3.0 migration, and keeping it on 2.8 lets a driver regression
+  be told apart from a Room 3 one.
 - `PendingDatabaseRestore`, which uses Android's `SQLiteDatabase` on the staged file. It belongs
   to the cross-platform backup work.
 - Changing queries, indexes or the schema.
@@ -58,6 +61,10 @@
   `connection.execSQL(sql)` (`androidx.sqlite.execSQL`). The SQL strings aren't touched.
 - Migration 1→2's helpers take a `SQLiteConnection`:
   - `needsFallback`: `connection.prepare("SELECT COUNT(*) …").use { it.step() && it.getLong(0) > 0 }`;
+  - migration 4→5's 11 `execSQL(sql, arrayOf(key, id, name))` updates (`SQLiteConnection` has
+    no `execSQL` with arguments) become `prepare(sql).use { bindText(1, key); bindText(2, id);
+    bindText(3, name); step() }`, and the golden file records their bound values (found 27 Nov,
+    when the first recording failed);
   - `columnsOf`: `prepare("PRAGMA table_info(`$table`)")`, find the `name` column through
     `getColumnNames()`, then `while (step()) add(getText(index))`.
 - **SQL golden test** (`MigrationSqlTest`, JVM, `src/test`): runs every migration against a
@@ -110,6 +117,15 @@ database.useWriterConnection { transactor ->
     up front through `prepare`/`step`/`getColumnType` and offers the `Cursor` calls the tests
     use (`moveToFirst`, `moveToNext`, `count`, `getString`, `getLong`, `getInt`, `getDouble`,
     `isNull`, `getColumnIndexOrThrow`, `use`). The roughly 290 assertions don't change.
+- **Fresh file per test** (found 27 Nov): the driver-based helper is bound to one file and opens
+  whatever is there, while the old `createDatabase(name, version)` deleted it first. A file left
+  at version 12 by one test made the next `createDatabase(2)` ask for a migration 12 → 2. Every
+  migration test class now deletes `TEST_DB` in `@Before`.
+- **Two more driver differences** (found 27 Nov, test-only): the helper's raw connection doesn't
+  enforce foreign keys unless `PRAGMA foreign_keys = ON` is run (as three tests already did;
+  the app's Room connections enforce them), and `AndroidSQLiteDriver` doesn't return rows for
+  `EXPLAIN`, so Migration9To10Test reads query plans through Android's own `SQLiteDatabase`.
+  The app runs no `EXPLAIN`.
 - **`MigrationFullChainTest`:** builds through `Room.databaseBuilder(...).setDriver(AndroidSQLiteDriver())`
   and checks through `useReaderConnection` with the same cursor helper.
 - **core:data Robolectric tests:** `.setDriver(AndroidSQLiteDriver())` on the in-memory builder

@@ -1,10 +1,13 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,14 +19,23 @@ class Migration11To12Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     @Test
     @Throws(IOException::class)
     fun existingAccountsAreUntouchedAndTheLedgerTablesWork() {
-        helper.createDatabase(TEST_DB, 11).apply {
+        helper.createDatabase(11).apply {
             execSQL(
                 """
                 INSERT INTO account
@@ -35,7 +47,7 @@ class Migration11To12Test {
             close()
         }
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 12, true, MIGRATION_11_12)
+        val db = helper.runMigrationsAndValidate(12, listOf(MIGRATION_11_12))
         db.execSQL("PRAGMA foreign_keys = ON")
 
         db.query("SELECT amount FROM account WHERE id = 'cash'").use { cursor ->

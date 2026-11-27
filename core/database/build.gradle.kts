@@ -27,6 +27,8 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
+    // AndroidSQLiteDriver: Room on the driver APIs (OpenSpec change move-database-to-sqlite-driver).
+    api(libs.androidx.sqlite.framework)
 
     // DateConverterTest: plain JVM test pinning the stored date format (KMP groundwork C1).
     testImplementation(libs.junit4)

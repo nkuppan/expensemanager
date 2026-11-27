@@ -22,9 +22,11 @@ Decisions (27 Nov):
   Android module, where the existing tests can check it. Change 8 moves the module to KMP and
   runs it on iOS.
 
-This is also the path Google recommends towards Room 3 (`androidx.room3`, stable 3.0.3): do the
-driver modernisation on Room 2.8 first. Whether change 8 lands on Room 2.8 KMP or Room 3 is
-decided when it's proposed.
+This is also phase 1 of Google's recommended path to Room 3 (`androidx.room3`, stable 3.0.3):
+do the driver modernisation on Room 2.8 first, then switch. Decision 27 Nov: **change 8 moves to
+Room 3 and KMP together** (package `androidx.room3`, `@ColumnTypeConverter`, `suspend` migrations
+with `executeSQL`). So the 11 migrations are touched twice, once here and once mechanically in
+change 8, and the golden SQL test from this change guards both passes.
 
 ## What Changes
 

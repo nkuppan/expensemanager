@@ -3,11 +3,14 @@ package com.naveenapps.expensemanager.core.database
 import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.useWriterConnection
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -28,8 +31,10 @@ class Migration1To2Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
 
     @Before
@@ -74,7 +79,7 @@ class Migration1To2Test {
         )
 
         // validateDroppedTables = true: every v2 table, column and FK must match 2.json exactly.
-        val db = helper.runMigrationsAndValidate(TEST_DB, 2, true, MIGRATION_1_2)
+        val db = helper.runMigrationsAndValidate(2, listOf(MIGRATION_1_2))
 
         db.query("SELECT name, type, icon_background_color, icon_name FROM category").use { cursor ->
             assertThat(cursor.count).isEqualTo(1)
@@ -120,7 +125,7 @@ class Migration1To2Test {
             "INSERT INTO `transaction` VALUES ('t-3', 'Lost', 'missing', 'acc-1', 1, 1.0, '', 2000, 2000, NULL)",
         )
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 2, true, MIGRATION_1_2)
+        val db = helper.runMigrationsAndValidate(2, listOf(MIGRATION_1_2))
 
         db.query("SELECT id, from_account_id, to_account_id FROM `transaction` ORDER BY id").use { cursor ->
             assertThat(cursor.count).isEqualTo(2)
@@ -158,7 +163,7 @@ class Migration1To2Test {
             "INSERT INTO `transaction` VALUES (1, 'Train ticket', 7, 30.0, '', 2000, 2000)",
         )
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 2, true, MIGRATION_1_2)
+        val db = helper.runMigrationsAndValidate(2, listOf(MIGRATION_1_2))
 
         db.query("SELECT id, name, icon_background_color, icon_name FROM category").use { cursor ->
             assertThat(cursor.count).isEqualTo(1)
@@ -186,7 +191,7 @@ class Migration1To2Test {
     fun emptyVersion1Database_migrates() {
         createVersion1Database("CREATE TABLE category (id TEXT NOT NULL PRIMARY KEY, name TEXT NOT NULL)")
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 2, true, MIGRATION_1_2)
+        val db = helper.runMigrationsAndValidate(2, listOf(MIGRATION_1_2))
 
         assertThat(count(db, "category")).isEqualTo(0)
         assertThat(count(db, "account")).isEqualTo(0)
@@ -207,11 +212,19 @@ class Migration1To2Test {
         )
 
         // This used to throw "A migration from 1 to 2 was required but not found".
+        // Opened like the app opens it (driver, migrations): Room migrates and validates on first use.
         val database = Room.databaseBuilder(context, ExpenseManagerDatabase::class.java, TEST_DB)
+            .setDriver(AndroidSQLiteDriver())
             .addMigrations(*ALL_MIGRATIONS)
             .build()
         try {
-            val db = database.openHelper.writableDatabase
+            runBlocking { database.useWriterConnection { transactor -> transactor.usePrepared("PRAGMA user_version") { it.step() } } }
+        } finally {
+            database.close()
+        }
+        // Then inspected directly, on its own connection.
+        val db = AndroidSQLiteDriver().open(context.getDatabasePath(TEST_DB).path)
+        try {
             assertThat(db.version).isEqualTo(ALL_MIGRATIONS.last().endVersion)
             assertThat(count(db, "transaction")).isEqualTo(1)
             db.query("SELECT default_category_key FROM category WHERE id = '3'").use { cursor ->
@@ -219,7 +232,7 @@ class Migration1To2Test {
                 assertThat(cursor.getString(0)).isEqualTo("food") // MIGRATION_4_5 still applies
             }
         } finally {
-            database.close()
+            db.close()
         }
     }
 
@@ -227,16 +240,16 @@ class Migration1To2Test {
 
     // region helpers
 
-    private fun count(db: SupportSQLiteDatabase, table: String): Int = db.query("SELECT COUNT(*) FROM `$table`").use { cursor ->
+    private fun count(db: SQLiteConnection, table: String): Int = db.query("SELECT COUNT(*) FROM `$table`").use { cursor ->
         cursor.moveToFirst()
         cursor.getInt(0)
     }
 
-    private fun tableNames(db: SupportSQLiteDatabase): List<String> = db.query("SELECT name FROM sqlite_master WHERE type = 'table'").use { cursor ->
+    private fun tableNames(db: SQLiteConnection): List<String> = db.query("SELECT name FROM sqlite_master WHERE type = 'table'").use { cursor ->
         buildList { while (cursor.moveToNext()) add(cursor.getString(0)) }
     }
 
-    private fun assertForeignKeysHold(db: SupportSQLiteDatabase) {
+    private fun assertForeignKeysHold(db: SQLiteConnection) {
         db.query("PRAGMA foreign_key_check").use { cursor ->
             assertThat(cursor.count).isEqualTo(0)
         }

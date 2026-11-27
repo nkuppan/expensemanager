@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import androidx.room.Room
+import androidx.room.useReaderConnection
+import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
@@ -17,6 +19,7 @@ import java.time.ZoneOffset
 import java.util.TimeZone as JavaTimeZone
 import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -44,7 +47,7 @@ class InstantStorageTest : BaseCoroutineTest() {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             ExpenseManagerDatabase::class.java,
-        ).allowMainThreadQueries().build()
+        ).setDriver(AndroidSQLiteDriver()).allowMainThreadQueries().build()
     }
 
     override fun onDestroy() {
@@ -80,12 +83,15 @@ class InstantStorageTest : BaseCoroutineTest() {
         database.categoryDao().insert(FAKE_CATEGORY.toEntityModel())
     }
 
-    private fun column(name: String, id: String): Long = database.openHelper.readableDatabase
-        .query("SELECT $name FROM recurring_transaction WHERE id = ?", arrayOf(id))
-        .use { cursor ->
-            cursor.moveToFirst()
-            cursor.getLong(0)
+    private fun column(name: String, id: String): Long = runBlocking {
+        database.useReaderConnection { transactor ->
+            transactor.usePrepared("SELECT $name FROM recurring_transaction WHERE id = ?") { statement ->
+                statement.bindText(1, id)
+                statement.step()
+                statement.getLong(0)
+            }
         }
+    }
 
     @Test
     fun storesTheLocalWallClockTimeExactlyAsBefore() = runTest {

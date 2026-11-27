@@ -1,11 +1,14 @@
 package com.naveenapps.expensemanager.core.database
 
 import androidx.room.testing.MigrationTestHelper
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.AndroidSQLiteDriver
+import androidx.sqlite.execSQL
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import java.io.IOException
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,20 +20,29 @@ class Migration8To9Test {
 
     @get:Rule
     val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        ExpenseManagerDatabase::class.java,
+        instrumentation = InstrumentationRegistry.getInstrumentation(),
+        file = InstrumentationRegistry.getInstrumentation().targetContext.getDatabasePath(TEST_DB),
+        driver = AndroidSQLiteDriver(),
+        databaseClass = ExpenseManagerDatabase::class,
     )
+
+    // The driver-based helper reuses one file and opens whatever is there; the SupportSQLite one
+    // deleted it first. Start every test from no database, as before.
+    @Before
+    fun deleteTestDatabase() {
+        InstrumentationRegistry.getInstrumentation().targetContext.deleteDatabase(TEST_DB)
+    }
 
     // region schema shape
 
     @Test
     @Throws(IOException::class)
     fun afterMigration_recurringTransactionTableExists() {
-        helper.createDatabase(TEST_DB, 8).close()
+        helper.createDatabase(8).close()
 
         // validateDroppedTables = true also checks the new table (columns, FKs, indices)
         // against 9.json, so any drift between MIGRATION_8_9 and the entity fails here.
-        val db = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
 
         val cursor = db.query("PRAGMA table_info(recurring_transaction)")
         val columnNames = buildList {
@@ -61,9 +73,9 @@ class Migration8To9Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_recurringTransactionIndicesExist() {
-        helper.createDatabase(TEST_DB, 8).close()
+        helper.createDatabase(8).close()
 
-        val db = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
 
         val cursor = db.query("PRAGMA index_list(recurring_transaction)")
         val indexNames = buildList {
@@ -85,11 +97,11 @@ class Migration8To9Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_recurringTransactionTableStartsEmpty() {
-        val db8 = helper.createDatabase(TEST_DB, 8)
+        val db8 = helper.createDatabase(8)
         insertCategoryAndAccounts(db8)
         db8.close()
 
-        val db9 = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db9 = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
         val cursor = db9.query("SELECT COUNT(*) FROM recurring_transaction")
         cursor.moveToFirst()
         assertThat(cursor.getInt(0)).isEqualTo(0)
@@ -104,11 +116,11 @@ class Migration8To9Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_canInsertAndReadRecurringTransaction() {
-        val db8 = helper.createDatabase(TEST_DB, 8)
+        val db8 = helper.createDatabase(8)
         insertCategoryAndAccounts(db8)
         db8.close()
 
-        val db9 = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db9 = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
         insertRecurringTransaction(db9, id = "rec-1", toAccountId = null)
 
         val cursor = db9.query(
@@ -169,7 +181,7 @@ class Migration8To9Test {
     @Test
     @Throws(IOException::class)
     fun afterMigration_otherTablesAreUntouched() {
-        val db8 = helper.createDatabase(TEST_DB, 8)
+        val db8 = helper.createDatabase(8)
         insertCategoryAndAccounts(db8)
         db8.execSQL(
             """
@@ -188,7 +200,7 @@ class Migration8To9Test {
         )
         db8.close()
 
-        val db9 = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db9 = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
 
         val category = db9.query("SELECT id, name FROM category")
         assertThat(category.count).isEqualTo(1)
@@ -223,12 +235,12 @@ class Migration8To9Test {
 
     // region helpers
 
-    private fun migrateWithOneRecurringTransaction(toAccountId: String?): SupportSQLiteDatabase {
-        val db8 = helper.createDatabase(TEST_DB, 8)
+    private fun migrateWithOneRecurringTransaction(toAccountId: String?): SQLiteConnection {
+        val db8 = helper.createDatabase(8)
         insertCategoryAndAccounts(db8)
         db8.close()
 
-        val db9 = helper.runMigrationsAndValidate(TEST_DB, 9, true, MIGRATION_8_9)
+        val db9 = helper.runMigrationsAndValidate(9, listOf(MIGRATION_8_9))
         // SQLite leaves FK enforcement off per connection unless asked; Room turns it on for
         // real app connections, so turn it on here to test the cascade the app relies on.
         db9.execSQL("PRAGMA foreign_keys = ON")
@@ -237,7 +249,7 @@ class Migration8To9Test {
         return db9
     }
 
-    private fun insertCategoryAndAccounts(db: SupportSQLiteDatabase) {
+    private fun insertCategoryAndAccounts(db: SQLiteConnection) {
         db.execSQL(
             """
             INSERT INTO category
@@ -259,7 +271,7 @@ class Migration8To9Test {
     }
 
     private fun insertRecurringTransaction(
-        db: SupportSQLiteDatabase,
+        db: SQLiteConnection,
         id: String,
         toAccountId: String?,
     ) {
@@ -276,7 +288,7 @@ class Migration8To9Test {
         )
     }
 
-    private fun countRecurring(db: SupportSQLiteDatabase): Int {
+    private fun countRecurring(db: SQLiteConnection): Int {
         val cursor = db.query("SELECT COUNT(*) FROM recurring_transaction")
         cursor.moveToFirst()
         val count = cursor.getInt(0)

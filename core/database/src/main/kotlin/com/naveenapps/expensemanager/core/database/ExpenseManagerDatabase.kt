@@ -26,7 +26,14 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
 
 /**
  * The Room database for this app
+ * The database file, in the app's databases folder. Never rename it: existing installs would lose their data.
+ * The schema version. Bump it only together with a new hand-written migration and its test (see
+ * DatabaseMigrations.kt). An open database is always at this version, so backup compares with it.
  */
+
+const val DATABASE_NAME = "expense_manager_database.db"
+const val DATABASE_VERSION = 12
+
 @Database(
     entities = [
         CategoryEntity::class,
@@ -40,7 +47,7 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
         DebtPersonEntity::class,
         DebtEntryEntity::class,
     ],
-    version = 12,
+    version = DATABASE_VERSION,
     exportSchema = true,
 )
 @TypeConverters(
