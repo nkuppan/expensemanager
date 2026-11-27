@@ -85,6 +85,9 @@ hand is error-prone. Rejected.
 ### D3. The date-range conversion moves to core:foundation
 - `fromLocalToUTCTimeStamp` and `fromUTCToLocalTimeStamp` move to core:foundation's
   `DateKeys.kt`, with the same names and bodies (kotlinx-datetime with the system default zone).
+  They gain an optional `zone: TimeZone = TimeZone.currentSystemDefault()` parameter (applied 27 Nov), so
+  shared tests can check several zones. Every existing call passes nothing and computes exactly
+  what it did before.
 - core:common removes its copies. Callers update their imports to
   `com.naveenapps.expensemanager.core.foundation`: DateRangeDataStore, DateConverter,
   TransactionRepositoryImpl, AppDatePickerDialog and core:common's own `fromUTCToLocalDate`.

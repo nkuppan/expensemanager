@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.common.utils
 
+import com.naveenapps.expensemanager.core.foundation.fromUTCToLocalTimeStamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -11,7 +12,6 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 // Formats below fall into two groups:
@@ -135,16 +135,6 @@ fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
         endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds(),
     )
 }
-
-fun Long.fromLocalToUTCTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
-    .toLocalDateTime(TimeZone.currentSystemDefault())
-    .toInstant(TimeZone.UTC)
-    .toEpochMilliseconds()
-
-fun Long.fromUTCToLocalTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
-    .toLocalDateTime(TimeZone.UTC)
-    .toInstant(TimeZone.currentSystemDefault())
-    .toEpochMilliseconds()
 
 fun Long.fromUTCToLocalDate(): Date = Date(this.fromUTCToLocalTimeStamp())
 

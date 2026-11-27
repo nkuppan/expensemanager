@@ -8,10 +8,14 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.json.JSONArray
-import org.json.JSONObject
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonArray
 
 class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
 
@@ -106,30 +110,18 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         message: String,
         postedAt: Long,
     ) = dataStore.edit { preferences ->
-        val history = runCatching { JSONArray(preferences[insightsKey] ?: "[]") }.getOrDefault(JSONArray())
-        val updated = JSONArray().put(
-            JSONObject()
-                .put("kind", kind)
-                .put("title", title)
-                .put("message", message)
-                .put("postedAt", postedAt),
-        )
-        for (i in 0 until minOf(history.length(), MAX_INSIGHTS - 1)) updated.put(history.get(i))
-        preferences[insightsKey] = updated.toString()
+        val history = readInsightHistory(preferences[insightsKey])
+        val entry = insightJson.encodeToJsonElement(InsightJson.serializer(), InsightJson(kind, title, message, postedAt))
+        // Older entries are copied as stored, even ones this version can't read.
+        preferences[insightsKey] = JsonArray(listOf(entry) + history.take(MAX_INSIGHTS - 1)).toString()
     }
 
     /** Newest first; entries that can't be read are skipped. */
     fun getInsights(): Flow<List<StoredInsight>> = dataStore.data.map { preferences ->
-        val history = runCatching { JSONArray(preferences[insightsKey] ?: "[]") }.getOrDefault(JSONArray())
-        (0 until history.length()).mapNotNull { i ->
+        readInsightHistory(preferences[insightsKey]).mapNotNull { element ->
             runCatching {
-                val item = history.getJSONObject(i)
-                StoredInsight(
-                    kind = item.optString("kind"),
-                    title = item.getString("title"),
-                    message = item.getString("message"),
-                    postedAt = item.getLong("postedAt"),
-                )
+                val item = insightJson.decodeFromJsonElement(InsightJson.serializer(), element)
+                StoredInsight(kind = item.kind, title = item.title, message = item.message, postedAt = item.postedAt)
             }.getOrNull()
         }
     }
@@ -228,7 +220,7 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
             val previous = preferences[reviewRequestCountKey]
                 ?: if (preferences[feedbackDialogShownKey] == true) 1 else 0
             preferences[reviewRequestCountKey] = previous + 1
-            preferences[reviewRequestedAtKey] = System.currentTimeMillis()
+            preferences[reviewRequestedAtKey] = Clock.System.now().toEpochMilliseconds()
         }
         preferences[feedbackDialogShownKey] = shown
     }
@@ -256,6 +248,30 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         const val MAX_NO_SPEND_DAYS = 120
     }
 }
+
+/**
+ * The insight history's stored form: a JSON array of `{kind, title, message, postedAt}`, newest
+ * first, as the earlier org.json code wrote it (InsightJsonCompatibilityTest checks both ways).
+ * A missing `kind` reads as "" (org.json's `optString`); unknown keys are ignored.
+ */
+@Serializable
+private data class InsightJson(
+    val kind: String = "",
+    val title: String,
+    val message: String,
+    val postedAt: Long,
+)
+
+// encodeDefaults: always write "kind", even when empty, as org.json did. isLenient: accept a
+// quoted postedAt, which org.json's getLong accepted too.
+private val insightJson = Json {
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+    isLenient = true
+}
+
+/** The stored history's entries; a missing or unreadable value is an empty history. */
+private fun readInsightHistory(value: String?): List<JsonElement> = runCatching { insightJson.parseToJsonElement(value ?: "[]").jsonArray.toList() }.getOrDefault(emptyList())
 
 /** One saved insight as stored; the repository maps it to the domain model. */
 data class StoredInsight(

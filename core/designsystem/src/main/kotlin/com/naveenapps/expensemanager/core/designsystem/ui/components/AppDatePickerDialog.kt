@@ -19,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDayInstant
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.em.EmButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.foundation.fromLocalToUTCTimeStamp
 import kotlin.time.Clock
 import kotlin.time.Instant
 

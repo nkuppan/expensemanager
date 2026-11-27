@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.database.utils
 
 import androidx.room.TypeConverter
-import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
-import com.naveenapps.expensemanager.core.common.utils.fromUTCToLocalTimeStamp
+import com.naveenapps.expensemanager.core.foundation.fromLocalToUTCTimeStamp
+import com.naveenapps.expensemanager.core.foundation.fromUTCToLocalTimeStamp
 import kotlin.time.Instant
 
 /**

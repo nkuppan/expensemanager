@@ -192,6 +192,7 @@ jobs:
           :core:model:allTests
           :core:repository:allTests
           :core:domain:allTests
+          :core:datastore:allTests
           :shared:allTests
           :shared:linkDebugFrameworkIosSimulatorArm64
 

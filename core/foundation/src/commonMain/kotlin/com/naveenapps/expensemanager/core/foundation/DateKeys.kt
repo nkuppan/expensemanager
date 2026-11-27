@@ -7,6 +7,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 /*
@@ -81,3 +82,22 @@ fun Instant.toMonthAndYearKey(timeZone: TimeZone = TimeZone.currentSystemDefault
 
 /** [toYearKey] of this instant's date in [timeZone] (the stored key of a yearly budget). */
 fun Instant.toYearKey(timeZone: TimeZone = TimeZone.currentSystemDefault()): String = toLocalDateIn(timeZone).toYearKey()
+
+// The database and the date-range store keep a local wall-clock time as if it were UTC
+// ("local as UTC"; DateConverter, DateConverterTest). These convert between that stored form and
+// a real instant. [zone] is the device zone; tests pass others.
+
+/** A real instant → its wall-clock time in [zone], stored as if it were UTC. */
+fun Long.fromLocalToUTCTimeStamp(zone: TimeZone = TimeZone.currentSystemDefault()): Long = Instant.fromEpochMilliseconds(this)
+    .toLocalDateTime(zone)
+    .toInstant(TimeZone.UTC)
+    .toEpochMilliseconds()
+
+/**
+ * The stored form back to a real instant in [zone]. A wall-clock time that occurs twice (when the
+ * clocks go back) gives the earlier instant; one skipped by a DST gap moves forward by the gap.
+ */
+fun Long.fromUTCToLocalTimeStamp(zone: TimeZone = TimeZone.currentSystemDefault()): Long = Instant.fromEpochMilliseconds(this)
+    .toLocalDateTime(TimeZone.UTC)
+    .toInstant(zone)
+    .toEpochMilliseconds()

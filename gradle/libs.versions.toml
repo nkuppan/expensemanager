@@ -45,6 +45,7 @@ kotlin = "2.4.21"
 kotlinxCoroutines = "1.11.0"
 kotlinxDatetime = "0.8.0"
 kotlinxSerializationJson = "1.12.0"
+orgJson = "20250517"
 # KSP is versioned independently of Kotlin since 2.3.0 (2.2.20-x was tied to Kotlin 2.2.20).
 ksp = "2.3.12"
 lint = "32.3.3"  # always AGP + 23.0.0 (AGP 9.3.3)
@@ -96,6 +97,8 @@ androidx-compose-runtime-annotation = { group = "androidx.compose.runtime", name
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 androidx-dataStore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
+# Multiplatform (Android + iOS) part of DataStore Preferences: the store classes in core:datastore's commonMain.
+androidx-dataStore-preference-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidxDataStore" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "androidxExifInterface" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -138,6 +141,8 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+# Test only (InsightJsonCompatibilityTest): the real org.json, since Android's is a stub in JVM tests.
+org-json = { group = "org.json", name = "json", version.ref = "orgJson" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
 lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 opencsv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
